@@ -1,0 +1,5 @@
+name: FFA_Core
+version: '${project.version}'
+main: ronik.ffacore.FFACore
+api-version: 1.19
+softdepend: [PlaceholderAPI]
