@@ -16,4 +16,5 @@ public class LivePlayer {
     public void setCurrentZone(String currentZone) { this.currentZoneName = currentZone; }
 
     public Player getPlayer() { return player; }
+
 }

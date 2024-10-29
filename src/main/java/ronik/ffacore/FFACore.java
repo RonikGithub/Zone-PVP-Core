@@ -24,6 +24,7 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
+import ronik.ffacore.listeners.PlayerDeathListener;
 
 import java.util.*;
 
@@ -40,7 +41,7 @@ public final class FFACore extends JavaPlugin implements Listener {
         // Plugin startup logic
         getLogger().info("FFACore plugin has been enabled! Woohoo");
         getServer().getPluginManager().registerEvents(this, this);
-
+        getServer().getPluginManager().registerEvents(new PlayerDeathListener(map), this);
         /////////////////////////////////
 //        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
 //            Bukkit.getPluginManager().registerEvents(this, this);
@@ -60,7 +61,6 @@ public final class FFACore extends JavaPlugin implements Listener {
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         String title = "§c§l  ZONE PVP BETA  "; // §c represents the color code for red
         objective.setDisplayName(title);
-
 
         new BukkitRunnable() {
             @Override
@@ -206,29 +206,6 @@ public final class FFACore extends JavaPlugin implements Listener {
                 }
                 players.remove(livePlayer);
                 break;
-            }
-        }
-    }
-
-    @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent event) {
-        // if player was killed by another player
-        String playerUUID = event.getEntity().getUniqueId().toString();
-        DatabaseHandler.addDeath(playerUUID);
-        if (event.getEntity().getKiller() != null) {
-            String killerUUID = Objects.requireNonNull(event.getEntity().getKiller()).getUniqueId().toString();
-            DatabaseHandler.addKill(killerUUID);
-        }
-
-        // get the location of the player's death
-        Location deathLocation = event.getEntity().getLocation();
-        Coords deathCoords = new Coords(deathLocation.getBlockX(), deathLocation.getBlockY(), deathLocation.getBlockZ());
-        // get the zone the player died in
-        Zone deathZone = map.getZone(deathCoords);
-        // if the player died in a zone
-        if (deathZone != null) {
-            if (deathZone.isCoordsInKoth(deathCoords)) {
-                deathZone.onPlayerNotInKoth(event.getEntity());
             }
         }
     }
