@@ -29,10 +29,9 @@ public class PlayerDeathListener implements Listener {
             DatabaseHandler.addKill(killerUUID);
         }
 
-        // get the location of the player's death
+        // getting the location of the player's death
         Location deathLocation = event.getEntity().getLocation();
         Coords deathCoords = new Coords(deathLocation.getBlockX(), deathLocation.getBlockY(), deathLocation.getBlockZ());
-        // get the zone the player died in
         Zone deathZone = map.getZone(deathCoords);
         // if the player died in a zone
         if (deathZone != null) {
@@ -40,7 +39,8 @@ public class PlayerDeathListener implements Listener {
                 deathZone.onPlayerNotInKoth(event.getEntity());
             }
         }
-        // create debug message to remind me of this change in the minecraft chat when someone dies
+
+        // debug message
         assert deathZone != null;
         event.getEntity().sendMessage("You died in zone: " + deathZone.getName() + " Remember class change Ronik");
     }
