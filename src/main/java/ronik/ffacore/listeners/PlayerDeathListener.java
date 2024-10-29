@@ -6,9 +6,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import ronik.ffacore.Coords;
-import ronik.ffacore.DatabaseHandler;
+import ronik.ffacore.database.DatabaseHandler;
 import ronik.ffacore.Zone;
 import ronik.ffacore.GameMap;
+
+import static org.bukkit.Bukkit.getLogger;
 
 import java.util.Objects;
 
@@ -28,6 +30,7 @@ public class PlayerDeathListener implements Listener {
             String killerUUID = Objects.requireNonNull(event.getEntity().getKiller()).getUniqueId().toString();
             DatabaseHandler.addKill(killerUUID);
         }
+        getLogger().info("ZonePVP plugin has been enabled! Woohoo");
 
         // getting the location of the player's death
         Location deathLocation = event.getEntity().getLocation();

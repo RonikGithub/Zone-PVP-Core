@@ -1,11 +1,25 @@
-package ronik.ffacore;
+package ronik.ffacore.database;
 import java.sql.*;
+
+import static org.bukkit.Bukkit.getLogger;
 
 public class DatabaseHandler {
 
     private static final String jdbcUrl = "jdbc:mysql://DATABASE URL";
     private static final String username = "#ENTER DATABSE USERNAME";
     private static final String password = "#ENTER DATABASE PASSOWRD";
+    private static Connection globalConnection;
+
+    public DatabaseHandler() {
+        try {
+            globalConnection = DriverManager.getConnection(jdbcUrl, username, password);
+            // print out a message to the server console
+            getLogger().info("Connected to the database");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            getLogger().info("Failed to connect to the database");
+        }
+    }
 
     public static int[] getStats(String uuid) {
         try {
@@ -164,5 +178,15 @@ public class DatabaseHandler {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void endConnection() {
+        try {
+            globalConnection.close();
+            getLogger().info("Disconnected from the database");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            getLogger().info("Failed to disconnect from the database");
+        }
     }
 }
